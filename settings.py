@@ -37,5 +37,3 @@ target_knob_set=['--enable_query_cache',                 # 启用query cache
 ansibledir="/tmp/beaver_datanode"
 gflagsdir="/run/rizhiyi_manager_agent/process/1922-beaver_datanode/config/"
 deploydir="/home/tidb/deploy/"
-beaver_url = "http://172.21.16.16:50061/_search?index=ops-http_baimi-20210507&sid=test&rpc_timeout=60"
-beaver_pbdata = 'search_info {query {type: kQueryMatchAll}fetch_source {fetch: true}size {value: 0} aggregations { aggs { type: kAggAvg name: "av(apache.resp_len)" body { field: "apache.resp_len__l__" } } } query_time_range {time_range {min: 0 max: 1620374828405}}}'
