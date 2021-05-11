@@ -1,4 +1,4 @@
-# AutoTiKV
+# AutoBeaverDatanode
 
 Using machine learning method to tune database configurations automatically
 
@@ -7,26 +7,18 @@ https://summerofcode.withgoogle.com/projects/#5626944123568128
 
 ### Dependency
 
-
-go 1.12.2
-
-tikv-ctl
-
-go-ycsb
-
 Python 3.6
 
 
 ### Install
+```python3.6 -m venv autoenv```
+```source autoenv/bin/activate```
 
-```./install.sh```
+```pip install -r requirements.txt```
 
-```sudo pip3 install -r requirements.txt```
-
-Then copy tikv_template.yml to TIDB_ANSIBLE/conf/tikv.yml
+Modify the relevant configuration parameters in the setting.py
 
 
 ### Document
 
-https://www.cnblogs.com/pdev/p/11318880.html
 
