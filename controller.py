@@ -1,6 +1,6 @@
 import sys
 import os
-from settings import beaver_broker_ip, beaver_broker_port, ansibledir, gflagsdir, index_forsearch, pb_forsearch
+from settings import beaver_broker_ip, beaver_broker_port, autotestdir, beaver_datanode_file, gflagsfile, config_path, log_dir, index_forsearch, pb_forsearch
 import psutil
 import time
 import numpy as np
@@ -80,26 +80,6 @@ knob_set=\
             "type": "bool",                         # int / enum
             "default": 0                            # default value
         },
-    "rocksdb.writecf.bloom-filter-bits-per-key":
-        {
-            "changebyyml": True,
-            "set_func": None,
-            "minval": 0,                            # if type==int, indicate min possible value
-            "maxval": 0,                            # if type==int, indicate max possible value
-            "enumval": [5,10,15,20],                # if type==enum, list all valid values
-            "type": "enum",                         # int / enum
-            "default": 0                            # default value
-        },
-    "rocksdb.writecf.optimize-filters-for-hits":
-        {
-            "changebyyml": True,
-            "set_func": None,
-            "minval": 0,                            # if type==int, indicate min possible value
-            "maxval": 0,                            # if type==int, indicate max possible value
-            "enumval": ['false', 'true'],           # if type==enum, list all valid values
-            "type": "bool",                         # int / enum
-            "default": 0                            # default value
-        },
     }
 
 
@@ -152,10 +132,10 @@ def read_search_latency(ip, port):
     for i in range(num + testnum):
         start_api = beaverrequest(url, data)
         if i >= testnum:
-            restime.append(start_api[1])
-            # costime.append(start_api[0]["timecost"])
+            # restime.append(start_api[1])
+            restime.append(start_api[0]["timecost"])
     sortedRestime = sorted(restime)
-    newrestime = sortedRestime[:-1]
+    newrestime = sortedRestime[:-10]
     return sum(newrestime) / len(newrestime)
 
 def beaverrequest(url, data):
@@ -238,11 +218,11 @@ def load_workload(wl_type):
 #------------------common functions------------------
 
 def set_tikvyml(knob_sessname, knob_val):
-    ymldir=os.path.join(ansibledir,"conf","beaver_test.gflags_new")
-    tmpdir=os.path.join(ansibledir,"conf","beaver_test.gflags")
+    ymldir=os.path.join(autotestdir,"conf","beaver_test.gflags_new")
+    tmpdir=os.path.join(autotestdir,"conf","beaver_test.gflags")
     if not os.path.exists(os.path.dirname(tmpdir)):
         os.makedirs(os.path.dirname(tmpdir))
-        os.popen("cp "+gflagsdir+" "+tmpdir).read()
+        os.popen("cp "+gflagsfile+" "+tmpdir).read()
     with open(tmpdir, 'r') as read_file, open(ymldir, 'w') as write_file:
         dic={}
         for line in read_file:
@@ -369,7 +349,7 @@ def calc_metric(metric_after, metric_before, metric_list):
 
 def restart_db():
     #cmd="cd /home/tidb/tidb-ansible/ && ansible-playbook unsafe_cleanup_data.yml"
-    dircmd="cd "+ ansibledir + " && "
+    dircmd="cd "+ autotestdir + " && "
     clrcmd="ansible-playbook unsafe_cleanup_data.yml"
     depcmd="ansible-playbook deploy.yml"
     runcmd="ansible-playbook start.yml"
@@ -410,12 +390,12 @@ def restart_db():
     print("-------------------------------------------------------")
 
 def restart_beaver_datanode():
-    dircmd="cd "+ ansibledir + " && "
+    dircmd="cd "+ autotestdir + " && "
     stopcmd="ps -ef|grep beaver_datanode|grep -v 'grep'|awk -F' *' '{print $2}'|xargs kill"
     querycmd="ps -ef|grep beaver_datanode|grep -v 'grep'|awk -F' *' '{print $2}'"
-    beaver_conf=os.path.join(ansibledir,"conf","beaver_datanode.gflags")
-    test_conf=os.path.join(ansibledir,"conf","beaver_test.gflags")
-    startcmd="/opt/rizhiyi/parcels/beaver_datanode-3.7.0.0/bin/beaver_datanode --flagfile="+beaver_conf+" "+"--config_path=/run/rizhiyi_manager_agent/process/2002-beaver_datanode/config/beaver_datanode.pb --log_dir=/data/rizhiyi/logs/beaver_datanode > /dev/null 2>&1"
+    beaver_conf=os.path.join(autotestdir,"conf","beaver_datanode.gflags")
+    test_conf=os.path.join(autotestdir,"conf","beaver_test.gflags")
+    startcmd=beaver_datanode_file+" --flagfile="+beaver_conf+" --config_path="+config_path+" --log_dir="+log_dir+" > /dev/null 2>&1"
     print("-----------------------------stop beaver datanode--------------------------")
     stopres = os.popen(stopcmd).read()
     if len(os.popen(querycmd).read()) != 0:

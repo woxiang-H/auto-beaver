@@ -28,7 +28,9 @@ target_knob_set=['--enable_query_cache',                 # 启用query cache
                  '--max_per_search_ram',                 # 单个Search最大占用的内存
                  '--max_per_sub_search_ram',             # 单个SubSearch最大占用的内存
                  '--block_ids_per_batch']                # 每个SubSearch的Block数目
-#target_knob_set=['disable-auto-compactions', 'optimize-filters-for-hits', 'write-buffer-size', 'block-size', 'max-bytes-for-level-base']
 
-ansibledir="/tmp/auto_beaver_datanode"
-gflagsdir="/run/rizhiyi_manager_agent/process/1922-beaver_datanode/config/beaver_datanode.gflags"
+autotestdir="/tmp/auto_beaver_datanode"
+beaver_datanode_file="/opt/rizhiyi/parcels/beaver_datanode-3.7.0.0/bin/beaver_datanode"
+gflagsfile="/run/rizhiyi_manager_agent/process/2002-beaver_datanode/config/beaver_datanode.gflags"
+config_path="/run/rizhiyi_manager_agent/process/2002-beaver_datanode/config/beaver_datanode.pb"
+log_dir="/data/rizhiyi/logs/beaver_datanode"
