@@ -1,8 +1,4 @@
-#info about tikv
-# tikv_ip="172.21.16.16"
-# tikv_port="50061"
-tikv_pd_ip="172.21.16.16"
-ycsb_port="2379"
+#info about beaver
 beaver_broker_ip="172.21.16.16"
 beaver_broker_port="50061"
 index_forsearch="ops-http_baimi-20210507"
