@@ -1,6 +1,6 @@
 import sys
 import os
-from settings import beaver_broker_ip, beaver_broker_port, tikv_pd_ip, ycsb_port, ansibledir, deploydir, index_forsearch, pb_forsearch
+from settings import beaver_broker_ip, beaver_broker_port, tikv_pd_ip, ycsb_port, ansibledir, gflagsdir, index_forsearch, pb_forsearch
 import psutil
 import time
 import numpy as np
@@ -24,20 +24,20 @@ knob_set=\
         {
             "changebyyml": True,
             "set_func": None,
-            "minval": 0,                           # if type==int, indicate min possible value
-            "maxval": 0,                         # if type==int, indicate max possible value
-            "enumval": [4, 6, 8],        # if type==enum, list all valid values
-            "type": "enum",                          # int / enum
-            "default": 0                           # default value
+            "minval": 0,                            # if type==int, indicate min possible value
+            "maxval": 0,                            # if type==int, indicate max possible value
+            "enumval": [4, 6, 8],                   # if type==enum, list all valid values
+            "type": "enum",                         # int / enum
+            "default": 0                            # default value
         },
     "--max_per_search_ram":
         {
             "changebyyml": True,
             "set_func": None,
-            "minval": 0,                          # if type==int, indicate min possible value
-            "maxval": 0,                         # if type==int, indicate max possible value
-            "enumval": [198],      # if type==enum, list all valid values
-            "type": "enum",                          # int / enum
+            "minval": 0,                            # if type==int, indicate min possible value
+            "maxval": 0,                            # if type==int, indicate max possible value
+            "enumval": [198],                       # if type==enum, list all valid values
+            "type": "enum",                         # int / enum
             "default": 0                            # default value
         },
     "--max_per_sub_search_ram":
@@ -46,7 +46,7 @@ knob_set=\
             "set_func": None,
             "minval": 0,                            # if type==int, indicate min possible value
             "maxval": 0,                            # if type==int, indicate max possible value
-            "enumval": [99],            # if type==enum, list all valid values
+            "enumval": [99],                        # if type==enum, list all valid values
             "type": "enum",                         # int / enum
             "default": 0                            # default value
         },
@@ -56,7 +56,7 @@ knob_set=\
             "set_func": None,
             "minval": 0,                            # if type==int, indicate min possible value
             "maxval": 0,                            # if type==int, indicate max possible value
-            "enumval": [16, 18, 20],           # if type==enum, list all valid values
+            "enumval": [16, 18, 20],                # if type==enum, list all valid values
             "type": "enum",                         # int / enum
             "default": 0                            # default value
         },
@@ -76,7 +76,7 @@ knob_set=\
             "set_func": None,
             "minval": 0,                            # if type==int, indicate min possible value
             "maxval": 0,                            # if type==int, indicate max possible value
-            "enumval": ['false', 'true'],                # if type==enum, list all valid values
+            "enumval": ['false', 'true'],           # if type==enum, list all valid values
             "type": "bool",                         # int / enum
             "default": 0                            # default value
         },
@@ -252,6 +252,9 @@ def load_workload(wl_type):
 def set_tikvyml(knob_sessname, knob_val):
     ymldir=os.path.join(ansibledir,"conf","beaver_test.gflags_new")
     tmpdir=os.path.join(ansibledir,"conf","beaver_test.gflags")
+    if not os.path.exists(os.path.dirname(tmpdir)):
+        os.makedirs(os.path.dirname(tmpdir))
+        os.popen("cp "+gflagsdir+" "+tmpdir).read()
     with open(tmpdir, 'r') as read_file, open(ymldir, 'w') as write_file:
         dic={}
         for line in read_file:
@@ -418,7 +421,7 @@ def restart_db():
         exit()
     print("-------------------------------------------------------")
 
-def restart_beaver():
+def restart_beaver_datanode():
     dircmd="cd "+ ansibledir + " && "
     stopcmd="ps -ef|grep beaver_datanode|grep -v 'grep'|awk -F' *' '{print $2}'|xargs kill"
     querycmd="ps -ef|grep beaver_datanode|grep -v 'grep'|awk -F' *' '{print $2}'"

@@ -1,4 +1,4 @@
-from controller import read_metric, read_knob, set_knob, knob_set, init_knobs, load_workload, run_workload, calc_metric, restart_beaver
+from controller import read_metric, read_knob, set_knob, knob_set, init_knobs, load_workload, run_workload, calc_metric, restart_beaver_datanode
 from gpmodel import configuration_recommendation
 from datamodel import GPDataSet
 from settings import beaver_broker_ip, beaver_broker_port, target_knob_set, target_metric_name, wl_metrics, wltype, loadtype
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         print("Round: ", Round, rec)
 
-        restart_beaver()
+        restart_beaver_datanode()
         # lres = load_workload(loadtype)
         # print(lres)
         # if("_ERROR" in lres):

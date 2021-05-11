@@ -34,6 +34,5 @@ target_knob_set=['--enable_query_cache',                 # 启用query cache
                  '--block_ids_per_batch']                # 每个SubSearch的Block数目
 #target_knob_set=['disable-auto-compactions', 'optimize-filters-for-hits', 'write-buffer-size', 'block-size', 'max-bytes-for-level-base']
 
-ansibledir="/tmp/beaver_datanode"
-gflagsdir="/run/rizhiyi_manager_agent/process/1922-beaver_datanode/config/"
-deploydir="/home/tidb/deploy/"
+ansibledir="/tmp/auto_beaver_datanode"
+gflagsdir="/run/rizhiyi_manager_agent/process/1922-beaver_datanode/config/beaver_datanode.gflags"
