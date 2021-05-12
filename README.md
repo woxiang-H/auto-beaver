@@ -12,6 +12,7 @@ Python 3.6
 
 ### Install
 ```python3.6 -m venv autoenv```
+
 ```source autoenv/bin/activate```
 
 ```pip install -r requirements.txt```
