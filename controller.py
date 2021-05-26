@@ -347,47 +347,47 @@ def calc_metric(metric_after, metric_before, metric_list):
             new_metric[0][i]=metric_after[0][i]
     return(new_metric)
 
-def restart_db():
-    #cmd="cd /home/tidb/tidb-ansible/ && ansible-playbook unsafe_cleanup_data.yml"
-    dircmd="cd "+ autotestdir + " && "
-    clrcmd="ansible-playbook unsafe_cleanup_data.yml"
-    depcmd="ansible-playbook deploy.yml"
-    runcmd="ansible-playbook start.yml"
-    ntpcmd="ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b"   #need sleep 10s after ntpcmd
-    print("-------------------------------------------------------")
-    clrres = os.popen(dircmd+clrcmd).read()
-    if("Congrats! All goes well" in clrres):
-        print("unsafe_cleanup_data finished, res == "+clrres.split('\n')[-2])
-    else:
-        print(clrres)
-        print("unsafe_cleanup_data failed")
-        exit()
-    print("-------------------------------------------------------")
-    ntpres = os.popen(dircmd + ntpcmd).read()
-    time.sleep(10)
-    if ("Congrats! All goes well" in ntpres):
-        print("set ntp finished, res == " + ntpres.split('\n')[-2])
-    else:
-        print(ntpres)
-        print("set ntp failed")
-        exit()
-    print("-------------------------------------------------------")
-    depres = os.popen(dircmd + depcmd).read()
-    if ("Congrats! All goes well" in depres):
-        print("deploy finished, res == "+depres.split('\n')[-2])
-    else:
-        print(depres)
-        print("deploy failed")
-        exit()
-    print("-------------------------------------------------------")
-    runres = os.popen(dircmd + runcmd).read()
-    if ("Congrats! All goes well" in runres):
-        print("start finished, res == "+runres.split('\n')[-2])
-    else:
-        print(runres)
-        print("start failed")
-        exit()
-    print("-------------------------------------------------------")
+# def restart_db():
+#     #cmd="cd /home/tidb/tidb-ansible/ && ansible-playbook unsafe_cleanup_data.yml"
+#     dircmd="cd "+ autotestdir + " && "
+#     clrcmd="ansible-playbook unsafe_cleanup_data.yml"
+#     depcmd="ansible-playbook deploy.yml"
+#     runcmd="ansible-playbook start.yml"
+#     ntpcmd="ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b"   #need sleep 10s after ntpcmd
+#     print("-------------------------------------------------------")
+#     clrres = os.popen(dircmd+clrcmd).read()
+#     if("Congrats! All goes well" in clrres):
+#         print("unsafe_cleanup_data finished, res == "+clrres.split('\n')[-2])
+#     else:
+#         print(clrres)
+#         print("unsafe_cleanup_data failed")
+#         exit()
+#     print("-------------------------------------------------------")
+#     ntpres = os.popen(dircmd + ntpcmd).read()
+#     time.sleep(10)
+#     if ("Congrats! All goes well" in ntpres):
+#         print("set ntp finished, res == " + ntpres.split('\n')[-2])
+#     else:
+#         print(ntpres)
+#         print("set ntp failed")
+#         exit()
+#     print("-------------------------------------------------------")
+#     depres = os.popen(dircmd + depcmd).read()
+#     if ("Congrats! All goes well" in depres):
+#         print("deploy finished, res == "+depres.split('\n')[-2])
+#     else:
+#         print(depres)
+#         print("deploy failed")
+#         exit()
+#     print("-------------------------------------------------------")
+#     runres = os.popen(dircmd + runcmd).read()
+#     if ("Congrats! All goes well" in runres):
+#         print("start finished, res == "+runres.split('\n')[-2])
+#     else:
+#         print(runres)
+#         print("start failed")
+#         exit()
+#     print("-------------------------------------------------------")
 
 def restart_beaver_datanode():
     dircmd="cd "+ autotestdir + " && "
